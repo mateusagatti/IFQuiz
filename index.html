@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IFQuiz | Simulados Escolares</title>
+<style>
+:root{--verde:#17823b;--escuro:#07552a;--claro:#e9f7ee;--vermelho:#c62828;--texto:#20312a}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f7f4;color:var(--texto)}
+header{background:linear-gradient(120deg,var(--escuro),var(--verde));color:white;padding:30px 18px;text-align:center;border-bottom:5px solid #d32f2f}
+header h1{margin:0;font-size:2.5rem}header p{margin:8px 0 0}main{max-width:930px;margin:30px auto;padding:0 16px}.painel{background:white;border-radius:15px;padding:28px;box-shadow:0 5px 22px #143b2312}h2{color:var(--escuro)}.grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:22px}
+button{border:0;border-radius:9px;background:var(--verde);color:white;padding:14px 18px;font-size:1rem;cursor:pointer;font-weight:600}button:hover{background:var(--escuro)}.materia{min-height:90px}.subtitulo,.progresso{color:#597063}.barra{height:9px;border-radius:12px;background:#dce9e0;overflow:hidden;margin:12px 0 24px}.preenchimento{height:100%;background:var(--verde);transition:width .2s}.alternativa{display:block;width:100%;margin:10px 0;text-align:left;background:#f1f7f3;color:var(--texto);border:2px solid #e0eee5;font-weight:normal}.alternativa:hover{background:#e1f2e7}.alternativa.selecionada{border-color:var(--verde);background:#d9f2e2}.acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.secundario{background:#e8f0eb;color:var(--escuro)}.secundario:hover{background:#d6e6db}.nota{font-size:3rem;font-weight:800;color:var(--verde);margin:10px 0}.gabarito{margin-top:26px}.item-gabarito{border:1px solid #dfe9e2;border-left:5px solid var(--verde);padding:16px;margin:12px 0;border-radius:9px;background:#fcfefd}.item-gabarito.errada{border-left-color:var(--vermelho);background:#fffafa}.status{font-weight:700;color:var(--verde)}.errada .status{color:var(--vermelho)}.item-gabarito p{margin:7px 0;line-height:1.5}footer{text-align:center;color:#62756a;padding:25px;font-size:.9rem}@media(max-width:600px){.painel{padding:20px}header h1{font-size:2rem}}
+</style>
+</head>
+<body>
+<header><h1>IFQuiz</h1><p>Plataforma de Simulados Escolares</p></header>
+<main><section class="painel" id="conteudo"></section></main>
+<footer>Projeto educacional • Hospedagem no Microsoft Azure</footer>
+<script>
+const banco = {
+"Informática": [
+["O que significa HTML?",["HyperText Markup Language","High Tech Machine Language","Home Tool Markup Language","Hyper Transfer Main Link"],0],
+["Qual linguagem é usada para estilizar páginas web?",["Python","Java","CSS","SQL"],2],
+["Qual serviço traduz nomes de domínio em endereços IP?",["DHCP","DNS","FTP","SSH"],1],
+["Qual comando mostra o diretório atual no Linux?",["ls","mkdir","cd","pwd"],3],
+["Qual protocolo permite acesso remoto seguro ao terminal?",["HTTP","FTP","SSH","SMTP"],2],
+["Qual linguagem é executada diretamente pelo navegador para adicionar interatividade?",["JavaScript","C","SQL","Bash"],0],
+["Qual comando lista arquivos no Linux?",["pwd","ls","cd","clear"],1],
+["Qual serviço distribui endereços IP automaticamente na rede?",["DNS","HTTP","DHCP","FTP"],2],
+["O que significa CPU?",["Central Processing Unit","Computer Personal Unit","Central Program Utility","Control Peripheral Unit"],0],
+["Qual porta é usada normalmente pelo HTTPS?",["21","22","80","443"],3]
+],
+"Matemática": [
+["Quanto é 15% de 200?",["15","20","30","40"],2],
+["Quanto é 7 × 8?",["54","56","64","48"],1],
+["Qual é a raiz quadrada de 144?",["10","11","12","14"],2],
+["Quanto é 2 elevado à quinta potência?",["10","16","25","32"],3],
+["Qual é a área de um quadrado de lado 6 cm?",["12 cm²","24 cm²","36 cm²","48 cm²"],2],
+["Resolva: 3x + 5 = 20. Quanto vale x?",["3","4","5","6"],2],
+["Qual é a soma dos ângulos internos de um triângulo?",["90°","180°","270°","360°"],1],
+["Quanto é 1/4 de 80?",["10","15","20","25"],2],
+["Qual é o perímetro de um retângulo de lados 4 cm e 7 cm?",["11 cm","18 cm","22 cm","28 cm"],2],
+["Qual é a média aritmética de 6, 8 e 10?",["7","8","9","10"],1]
+],
+"Português": [
+["Qual palavra está escrita corretamente?",["Excessão","Exceção","Esceção","Eceção"],1],
+["Qual é o plural de 'cidadão'?",["Cidadões","Cidadães","Cidadãos","Cidadãoes"],2],
+["Na frase 'Ela corre rapidamente', 'rapidamente' é um:",["Substantivo","Adjetivo","Advérbio","Artigo"],2],
+["Qual das palavras é um verbo?",["Bonito","Correr","Mesa","Azul"],1],
+["Qual frase apresenta concordância verbal correta?",["Os alunos estuda.","Nós vai à escola.","Eles estudam bastante.","As meninas brinca."],2],
+["Qual é o antônimo de 'generoso'?",["Bondoso","Solidário","Egoísta","Amável"],2],
+["Qual sinal de pontuação encerra uma pergunta direta?",["Vírgula","Ponto e vírgula","Ponto final","Ponto de interrogação"],3],
+["Qual palavra é proparoxítona?",["Café","Lâmpada","Papel","Sofá"],1],
+["Na frase 'O livro é interessante', qual é o sujeito?",["É interessante","Interessante","O livro","Livro é"],2],
+["Qual figura de linguagem ocorre em 'Seus olhos são estrelas'?",["Metáfora","Hipérbole","Ironia","Onomatopeia"],0]
+],
+"História": [
+["Em que ano foi proclamada a Independência do Brasil?",["1500","1822","1889","1922"],1],
+["Em que ano ocorreu a Proclamação da República no Brasil?",["1822","1889","1930","1964"],1],
+["Qual acontecimento começou em 1789 na França?",["Revolução Industrial","Revolução Francesa","Primeira Guerra Mundial","Reforma Protestante"],1],
+["Qual povo construiu as pirâmides de Gizé?",["Romanos","Gregos","Egípcios","Maias"],2],
+["Em que ano terminou a Segunda Guerra Mundial?",["1918","1939","1945","1960"],2],
+["Qual lei aboliu oficialmente a escravidão no Brasil?",["Lei Áurea","Lei de Terras","Lei Eusébio de Queirós","Constituição de 1824"],0],
+["Quem foi o primeiro presidente do Brasil?",["Getúlio Vargas","Deodoro da Fonseca","Dom Pedro II","Juscelino Kubitschek"],1],
+["Qual movimento artístico e cultural teve um marco em São Paulo em 1922?",["Barroco","Romantismo","Modernismo","Arcadismo"],2],
+["Em qual continente teve início a Revolução Industrial?",["África","Europa","Ásia","América"],1],
+["Qual documento foi promulgado no Brasil em 1988?",["Lei Áurea","Constituição Federal","Tratado de Tordesilhas","Ato Institucional nº 5"],1]
+],
+"Geografia": [
+["Qual é a capital do Brasil?",["São Paulo","Brasília","Rio de Janeiro","Salvador"],1],
+["Qual é o maior oceano da Terra?",["Atlântico","Índico","Ártico","Pacífico"],3],
+["Em qual continente fica o Brasil?",["Europa","América do Sul","Ásia","África"],1],
+["Qual linha imaginária divide a Terra em hemisférios Norte e Sul?",["Trópico de Capricórnio","Meridiano de Greenwich","Linha do Equador","Círculo Polar Ártico"],2],
+["Qual é a capital do Rio Grande do Sul?",["Caxias do Sul","Pelotas","Porto Alegre","Santa Maria"],2],
+["Qual bioma brasileiro ocupa grande parte da região Norte?",["Pampa","Caatinga","Amazônia","Pantanal"],2],
+["Qual é o maior país do mundo em área territorial?",["Canadá","China","Rússia","Brasil"],2],
+["Qual movimento da Terra está relacionado à sucessão de dias e noites?",["Translação","Rotação","Precessão","Revolução lunar"],1],
+["Qual país faz fronteira com o Rio Grande do Sul?",["Chile","Bolívia","Uruguai","Peru"],2],
+["Qual instrumento mede a pressão atmosférica?",["Termômetro","Barômetro","Anemômetro","Pluviômetro"],1]
+],
+"Biologia": [
+["Qual é a unidade básica dos seres vivos?",["Tecido","Órgão","Célula","Sistema"],2],
+["Qual organela é responsável pela maior parte da produção de ATP na respiração celular?",["Mitocôndria","Ribossomo","Lisossomo","Núcleo"],0],
+["Qual molécula armazena a informação genética?",["Glicose","DNA","Água","Amido"],1],
+["Qual processo permite às plantas produzir açúcares usando luz?",["Fermentação","Digestão","Fotossíntese","Transpiração"],2],
+["Qual órgão humano bombeia o sangue?",["Pulmão","Fígado","Rim","Coração"],3],
+["Qual sistema do corpo humano é responsável pelas trocas gasosas?",["Digestório","Respiratório","Nervoso","Esquelético"],1],
+["Qual é a principal função dos glóbulos vermelhos?",["Transportar oxigênio","Produzir hormônios","Digerir proteínas","Formar ossos"],0],
+["Qual cientista é associado à teoria da seleção natural?",["Isaac Newton","Charles Darwin","Albert Einstein","Louis Pasteur"],1],
+["Qual é o nome da divisão celular que produz duas células-filhas geneticamente semelhantes?",["Meiose","Mitose","Fecundação","Mutação"],1],
+["Em uma cadeia alimentar, as plantas geralmente são:",["Consumidores primários","Decompositores","Produtores","Predadores"],2]
+],
+"Química": [
+["Qual é a fórmula química da água?",["CO₂","H₂O","O₂","NaCl"],1],
+["Qual é o símbolo químico do oxigênio?",["Ox","O","Og","Os"],1],
+["Qual partícula possui carga elétrica negativa?",["Próton","Nêutron","Elétron","Núcleo"],2],
+["Qual é o número atômico do hidrogênio?",["1","2","8","10"],0],
+["Uma solução com pH 3 é considerada:",["Básica","Neutra","Ácida","Salina obrigatoriamente"],2],
+["Qual é a fórmula do sal de cozinha (cloreto de sódio)?",["HCl","NaCl","KOH","CO₂"],1],
+["Qual mudança de estado ocorre do líquido para o gasoso?",["Fusão","Solidificação","Condensação","Vaporização"],3],
+["Qual elemento químico tem símbolo Fe?",["Flúor","Ferro","Fósforo","Frâncio"],1],
+["Qual partícula determina o número atômico de um elemento?",["Elétron","Nêutron","Próton","Fóton"],2],
+["Qual das opções é uma mistura homogênea?",["Água e óleo","Areia e água","Água com sal totalmente dissolvido","Granito"],2]
+],
+"Física": [
+["Qual é a unidade de força no Sistema Internacional?",["Joule","Newton","Watt","Pascal"],1],
+["Qual é a unidade de velocidade no Sistema Internacional?",["km/h","m/s","m²","kg/s"],1],
+["Qual grandeza é medida em joules?",["Energia","Força","Pressão","Temperatura"],0],
+["Um carro percorre 100 km em 2 horas. Qual sua velocidade média?",["25 km/h","50 km/h","75 km/h","200 km/h"],1],
+["Qual é o valor aproximado da aceleração da gravidade na superfície da Terra?",["1,8 m/s²","5 m/s²","9,8 m/s²","98 m/s²"],2],
+["Qual instrumento mede a corrente elétrica?",["Voltímetro","Amperímetro","Barômetro","Termômetro"],1],
+["Qual é a unidade de potência no Sistema Internacional?",["Watt","Newton","Joule","Metro"],0],
+["Qual lei de Newton relaciona força resultante, massa e aceleração?",["Primeira lei","Segunda lei","Terceira lei","Lei da gravitação universal"],1],
+["O som se propaga no vácuo?",["Sim, sempre","Sim, apenas no espaço","Não, precisa de meio material","Apenas se houver luz"],2],
+["Qual fenômeno explica a mudança de direção da luz ao passar do ar para a água?",["Reflexão","Refração","Difração","Indução"],1]
+]
+};
+let disciplinaAtual="",indice=0,respostas=[];
+const area=document.getElementById("conteudo");
+function elemento(tag,texto,classe){const el=document.createElement(tag);if(texto!==undefined)el.textContent=texto;if(classe)el.className=classe;return el;}
+function botao(texto,acao,classe){const b=elemento("button",texto,classe);b.addEventListener("click",acao);return b;}
+function inicio(){area.replaceChildren();area.append(elemento("h2","Bem-vindo ao IFQuiz!"),elemento("p","Escolha uma disciplina e responda a 10 questões. Ao final, confira sua nota e o gabarito completo.","subtitulo"));const grade=elemento("div",undefined,"grade");Object.keys(banco).forEach(nome=>grade.append(botao(nome+" • 10 questões",()=>iniciar(nome),"materia")));area.append(grade);}
+function iniciar(nome){disciplinaAtual=nome;indice=0;respostas=Array(banco[nome].length).fill(null);mostrar();}
+function mostrar(){const questoes=banco[disciplinaAtual],q=questoes[indice];area.replaceChildren();area.append(elemento("p",disciplinaAtual+" • Questão "+(indice+1)+" de "+questoes.length,"progresso"));const barra=elemento("div",undefined,"barra"),preenchimento=elemento("div",undefined,"preenchimento");preenchimento.style.width=((indice+1)/questoes.length*100)+"%";barra.append(preenchimento);area.append(barra,elemento("h2",q[0]));q[1].forEach((alternativa,i)=>{const b=botao(String.fromCharCode(65+i)+") "+alternativa,()=>{respostas[indice]=i;mostrar();},"alternativa"+(respostas[indice]===i?" selecionada":""));area.append(b);});const acoes=elemento("div",undefined,"acoes");if(indice>0)acoes.append(botao("Voltar",()=>{indice--;mostrar()},"secundario"));acoes.append(botao(indice===questoes.length-1?"Finalizar simulado":"Próxima questão",()=>{if(respostas[indice]===null){alert("Selecione uma alternativa antes de continuar.");return;}if(indice<questoes.length-1){indice++;mostrar();}else{resultado();}}));area.append(acoes);}
+function resultado(){const questoes=banco[disciplinaAtual],acertos=questoes.reduce((s,q,i)=>s+(respostas[i]===q[2]?1:0),0),porcentagem=Math.round(acertos/questoes.length*100);area.replaceChildren(elemento("h2","Resultado — "+disciplinaAtual),elemento("div",porcentagem+"%","nota"),elemento("p","Você acertou "+acertos+" de "+questoes.length+" questões."));const acoes=elemento("div",undefined,"acoes");acoes.append(botao("Refazer simulado",()=>iniciar(disciplinaAtual)),botao("Escolher outra disciplina",inicio,"secundario"));area.append(acoes,elemento("h2","Gabarito comentado por questão","gabarito"));questoes.forEach((q,i)=>{const acertou=respostas[i]===q[2],card=elemento("div",undefined,"item-gabarito"+(acertou?"":" errada"));card.append(elemento("p",(i+1)+". "+q[0]),elemento("p",acertou?"✓ Correta":"✗ Incorreta","status"),elemento("p","Sua resposta: "+String.fromCharCode(65+respostas[i])+") "+q[1][respostas[i]]),elemento("p","Resposta correta: "+String.fromCharCode(65+q[2])+") "+q[1][q[2]]));area.append(card);});}
+inicio();
+</script>
+</body>
+</html>
